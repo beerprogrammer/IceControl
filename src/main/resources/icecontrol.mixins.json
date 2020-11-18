@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "icecontrol.refmap.json",
 	"mixins": [
-        "IceControlMixin"
+		"IceControlMixin",
+		"SnowControlMixin",
+		"BiomeFreezeControlMixin",
+		"WaterFluidMixin"
 	],
 	"minVersion": "0.8"
 }

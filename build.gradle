@@ -21,7 +21,6 @@ mixin {
     add sourceSets.main, "icecontrol.refmap.json"
 }
 
-version = '1.0'
 group = 'dev.codewolf.icecontrol' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'icecontrol'
 
@@ -37,7 +36,7 @@ minecraft {
     mappings channel: 'snapshot', version: '20200514-1.16.3'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -130,9 +129,9 @@ jar {
         attributes([
             "Specification-Title": "icecontrol",
             "Specification-Vendor": "CodeWolf219",
-            "Specification-Version": "1", // We are version 1 of ourselves
+            "Specification-Version": "1.1.0", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${version}-${minecraftVersion}",
             "Implementation-Vendor" :"CodeWolf219",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),            
             "MixinConfigs": "icecontrol.mixins.json"
