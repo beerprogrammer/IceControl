@@ -34,23 +34,27 @@ public abstract class WaterFluidMixin extends Fluid {
     protected void randomTick(World worldIn, BlockPos pos, FluidState state, Random random) {
         Block up = worldIn.getBlockState(pos.up()).getBlock();
         if (worldIn.getBiome(pos).field_242423_j.field_242461_c >= IceControl.COMMON_CONFIG.getWaterThawTemperature() || 
-            up == Blocks.WATER || 
-            ((up == Blocks.ICE || up == Blocks.BLUE_ICE || up == Blocks.PACKED_ICE) && !IceControl.COMMON_CONFIG.getFreezeTopLayerOnly()) ||
+            (up != Blocks.AIR && up != Blocks.ICE && up != Blocks.PACKED_ICE && up != Blocks.BLUE_ICE) ||
+            (up != Blocks.AIR && IceControl.COMMON_CONFIG.getFreezeTopLayerOnly()) || // Up is ice and freeze top layer only
             !IceControl.COMMON_CONFIG.shouldBlockFreeze()) {
             return;
         } else {
             if (pos.getY() >= 0 && pos.getY() < 256 && worldIn.getLightFor(LightType.BLOCK,
                     pos) <= IceControl.COMMON_CONFIG.getWaterFreezeLightLevel()) {
 
-                if (IceControl.COMMON_CONFIG.allowNucleation()) {
-                    turnToIce(worldIn, pos);
-                    return;
-                }
-
-                boolean flag = worldIn.hasWater(pos.west()) && worldIn.hasWater(pos.east())
-                        && worldIn.hasWater(pos.north()) && worldIn.hasWater(pos.south());
-                if (!flag) {
-                    turnToIce(worldIn, pos);
+                // Check additional blocks above for ice\
+                int limit = IceControl.COMMON_CONFIG.getMaxIceThickness() - 1;
+                BlockPos mutablePos = pos.up();
+                for(int i = 0; i < limit; i++) {
+                    mutablePos = mutablePos.up(); 
+                    up = worldIn.getBlockState(mutablePos).getBlock();
+                    if(up == Blocks.ICE || up == Blocks.PACKED_ICE || up == Blocks.BLUE_ICE) {
+                        continue;
+                    }
+                    if(up == Blocks.AIR) {
+                        turnToIce(worldIn, pos);
+                        return;
+                    }
                 }
             }
         }

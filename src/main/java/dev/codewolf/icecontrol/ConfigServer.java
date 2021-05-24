@@ -19,7 +19,7 @@ public class ConfigServer {
     private final IntValue snowMeltLightLevel;
     private final IntValue waterFreezeLightLevel;
     private final DoubleValue waterThawTemperature;
-    private final DoubleValue nucleationSiteChance;
+    private final IntValue maxIceThickness;
     private final EnumValue<FreezeSpeed> freezingSpeed;
     
     private java.util.Random random = new java.util.Random();
@@ -66,13 +66,13 @@ public class ConfigServer {
         builder.comment("Biome temperature required to freeze water (default 0.15)");
         this.waterThawTemperature = builder.defineInRange("waterThawTemperature", 0.15, 0.0, 1.0);
 
-        builder.comment("Freeze top layer only (true) or freeze all water(false)");
+        builder.comment("Freeze top layer only (vanilla behavior) or freeze multiple layers (default false)");
         this.freezeTopLayerOnly = builder.define("freezeTopLayerOnly", true);
 
-        builder.comment("Probability to freeze when surrounded by water (default 0.001");
-        this.nucleationSiteChance = builder.defineInRange("nucleationSiteChance", 0.001, 0.0, 1.0);
+        builder.comment("Maximum thickness of ice from the surface (default 3)");
+        this.maxIceThickness = builder.defineInRange("maxIceThickness", 3, 1, 256);
 
-        builder.comment("Speed blocks will freeze at.  NORMAL = Approximately vanilla rare, FASTEST = matches random tick rate");
+        builder.comment("Speed blocks will freeze at.  NORMAL = Approximately vanilla rate, FASTEST = matches random tick rate");
         this.freezingSpeed = builder.defineEnum("freezingSpeed", FreezeSpeed.NORMAL);
         builder.pop();
 
@@ -153,7 +153,7 @@ public class ConfigServer {
         return random.nextInt(chance) == 0;
     }
 
-    public boolean allowNucleation() {
-        return nucleationSiteChance.get() > random.nextDouble();
+    public int getMaxIceThickness() {
+        return maxIceThickness.get();
     }
 }
