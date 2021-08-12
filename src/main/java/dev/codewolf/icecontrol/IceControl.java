@@ -4,8 +4,9 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
-@Mod("icecontrol")
+@Mod(IceControl.MOD_ID)
 public class IceControl {
+    public static final String MOD_ID = "icecontrol";
     public static final ConfigServer COMMON_CONFIG = new ConfigServer();
 
     public IceControl() {
